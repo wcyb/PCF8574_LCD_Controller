@@ -10,9 +10,9 @@
 #define _PCF8574LCDController_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
+#include "arduino.h"
 #else
-	#include "WProgram.h"
+#include "WProgram.h"
 #endif
 
 #include <Wire.h>
@@ -22,11 +22,16 @@
 #define PCF8574A_DEFAULT_ADDRESS 0x38
 #define PCF8574A_ALTERNATE_DEFAULT_ADDRESS 0x3F
 
+#ifndef ENUM_CONVERSION
+#define ENUM_CONVERSION 1
+
 template<typename Enumerator>
 uint8_t getEnumValue(const Enumerator& enumType)
 {
 	return static_cast<uint8_t>(enumType);
 }
+
+#endif // ENUM_CONVERSION
 
 class PCF8574LCDController final
 {
@@ -210,10 +215,10 @@ public:
 	/// <param name="sizeY">Lines count</param>
 	/// <param name="font">Font type selection. 0 = 5x8, 1 = 5x10</param>
 	PCF8574LCDController(
-		const uint8_t& pcf8574Address, const uint8_t& sizeX, const uint8_t& sizeY, 
+		const uint8_t& pcf8574Address, const uint8_t& sizeX, const uint8_t& sizeY,
 		const uint8_t& font = 0, LCDDriverType driverType = LCDDriverType::HD44780) :
 		m_pcfAddress(pcf8574Address), m_displaySizeX(sizeX), m_displaySizeY(sizeY),
-		m_displayFont(font) 
+		m_displayFont(font)
 	{
 		if (driverType == LCDDriverType::HD44780 || driverType == LCDDriverType::SPLC780D) initializeDisplayHD44780();
 		else initializeDisplayKS0066();
